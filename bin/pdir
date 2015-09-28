@@ -1,0 +1,3 @@
+#!/bin/bash
+
+cd panda_plugins/$1 2>/dev/null || cd panda/qemu/panda_plugins/$1 2>/dev/null || cd ../$1
