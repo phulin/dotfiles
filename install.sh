@@ -10,7 +10,6 @@ link .tmux.conf
 link .bashrc
 link .gdbinit
 link .gitconfig
-link .tmux.conf
 link .dircolors
 git submodule init
 git submodule update
