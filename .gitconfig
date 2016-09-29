@@ -1,6 +1,6 @@
-[user]
-	name = Patrick Hulin
-	email = patrick.hulin@gmail.com
+#[user]
+#	name = Patrick Hulin
+#	email = patrick.hulin@gmail.com
 [log]
 	decorate = short
 [alias]
