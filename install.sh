@@ -22,3 +22,8 @@ rm ~/.vimrc.before.local ~/.vimrc.local ~/.vimrc.bundles.local
 link .vimrc.before.local
 link .vimrc.local
 link .vimrc.bundles.local
+
+if [ ! -d ~/.vim/syntax ]; then
+    mkdir -p ~/.vim/syntax
+    ln -s .vim/syntax/llvm.vim ~/.vim/syntax/llvm.vim
+fi
