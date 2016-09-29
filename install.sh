@@ -1,7 +1,17 @@
 #!/bin/bash
 
 function link() {
-    ln -s "$dir/$1" ~
+    file="$dir/$1"
+    target="$HOME/$1"
+    if [ -L "$target" ]; then
+        echo "Skipping $target... already done."
+        return
+    elif [ -e "$target" ]; then
+        echo "$target exists... backing up and linking."
+        mv "$target" "$target"-$(date +%Y_%m_%d_%h%s)
+    fi
+    echo "Linking $file into ~."
+    ln -s "$file" ~
 }
 
 cd $(dirname $0)
@@ -17,13 +27,11 @@ if [ ! -d ~/.spf13-vim-3 ]; then
     pushd spf13-vim
     ./bootstrap.sh
     popd
+    rm ~/.vimrc.before.local ~/.vimrc.local ~/.vimrc.bundles.local
 fi
-rm ~/.vimrc.before.local ~/.vimrc.local ~/.vimrc.bundles.local
 link .vimrc.before.local
 link .vimrc.local
 link .vimrc.bundles.local
 
-if [ ! -d ~/.vim/syntax ]; then
-    mkdir -p ~/.vim/syntax
-    ln -s .vim/syntax/llvm.vim ~/.vim/syntax/llvm.vim
-fi
+mkdir -p ~/.vim/syntax
+link .vim/syntax/llvm.vim
