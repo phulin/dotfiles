@@ -30,7 +30,7 @@ if [ ! -d ~/.spf13-vim-3 ]; then
     pushd spf13-vim
     ./bootstrap.sh
     popd
-    rm .vimrc.local
+    rm ~/.vimrc.local
 fi
 link .vimrc.local
 
