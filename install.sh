@@ -11,7 +11,7 @@ function link() {
         mv "$target" "$target"-$(date +%Y_%m_%d_%h%s)
     fi
     echo "Linking $file into ~."
-    ln -s "$file" ~
+    ln -s "$file" "$target"
 }
 
 cd $(dirname $0)
@@ -21,17 +21,23 @@ link .bashrc
 link .gdbinit
 link .gitconfig
 link .dircolors
+
 git submodule init
 git submodule update
+link .vimrc.before.local
+link .vimrc.bundles.local
 if [ ! -d ~/.spf13-vim-3 ]; then
     pushd spf13-vim
     ./bootstrap.sh
     popd
-    rm ~/.vimrc.before.local ~/.vimrc.local ~/.vimrc.bundles.local
+    rm .vimrc.local
 fi
-link .vimrc.before.local
 link .vimrc.local
-link .vimrc.bundles.local
 
 mkdir -p ~/.vim/syntax
 link .vim/syntax/llvm.vim
+
+mkdir -p ~/bin
+link bin/up
+link bin/qemu-ctags
+link bin/doge
