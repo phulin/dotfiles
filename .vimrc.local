@@ -7,3 +7,8 @@ let g:airline#extensions#whitespace#enabled = 0
 let g:neocomplcache_disable_auto_complete = 1
 
 setlocal nospell
+
+nmap ,l :bnext<CR>
+nmap ,h :bprevious<CR>
+nmap ,bq :bp <BAR> bd #<CR>
+nmap ,bl :ls<CR>
