@@ -2,3 +2,10 @@ let g:AutoPairsMapBS = 0
 let g:spf13_bundle_groups = ['general', 'writing', 'programming', 'ruby', 'python', 'javascript', 'html', 'misc',]
 let g:pymode_python = 'python'
 let g:pymode_folding = 0
+
+let g:airline_powerline_fonts = 1
+let g:airline_section_b = ' %{fugitive#head(8)}'
+let g:airline_section_x = '' "'%{airline#extensions#tagbar#currenttag()}'
+"let g:airline_section_y = '%{airline#extensions#tagbar#currenttag()}'
+let g:airline_section_y = '%{airline#parts#filetype()}'
+let g:airline_section_z = '%4l/%L : %3v'
