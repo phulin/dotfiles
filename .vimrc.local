@@ -5,3 +5,5 @@ let g:spf13_keep_trailing_whitespace=1
 let g:airline#extensions#whitespace#enabled = 0
 
 let g:neocomplcache_disable_auto_complete = 1
+
+setlocal nospell
