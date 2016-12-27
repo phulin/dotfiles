@@ -1,3 +1,6 @@
 UnBundle 'scrooloose/syntastic'
 UnBundle 'jiangmiao/auto-pairs'
+UnBundle 'jiangmiao/auto-pairs'
+UnBundle 'tpope/vim-cucumber'
+UnBundle 'quentindecock/vim-cucumber-align-pipes'
 Bundle 'mxw/vim-jsx'
