@@ -37,6 +37,13 @@ link .vimrc.local
 mkdir -p ~/.vim/syntax
 link .vim/syntax/llvm.vim
 
+if [ ! -d ~/.gdb_printers ]; then
+    mkdir ~/.gdb_printers
+    pushd ~/.gdb_printers
+    svn co svn://gcc.gnu.org/svn/gcc/trunk/libstdc++-v3/python
+    popd
+fi
+
 mkdir -p ~/bin
 link bin/up
 link bin/qemu-ctags
