@@ -3,12 +3,14 @@ let g:indent_guides_enable_on_vim_startup=0
 let g:spf13_keep_trailing_whitespace=1
 
 let g:airline#extensions#whitespace#enabled = 0
+let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#fnamemod = ':t'
 
 let g:neocomplcache_disable_auto_complete = 1
 
-setlocal nospell
+set nospell
 
-nmap ,l :bnext<CR>
-nmap ,h :bprevious<CR>
+nmap ,l :bnext<CR>:AirlineRefresh<CR>
+nmap ,h :bprevious<CR>:AirlineRefresh<CR>
 nmap ,bq :bp <BAR> bd #<CR>
 nmap ,bl :ls<CR>
