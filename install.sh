@@ -62,10 +62,10 @@ if which lsb_release && ( lsb_release -d | grep -q Ubuntu ) && \
     # Ubuntu Desktop
     echo "Linking in Powerline fonts & fontconfig information..."
     mkdir -p ~/.fonts.conf.d ~/.config/fontconfig/conf.d ~/.fonts/
-    ln -s powerline/develop/font/PowerlineSymbols.otf ~/.fonts/
+    ln -s "$dir"/powerline/font/PowerlineSymbols.otf ~/.fonts/
+    ln -s "$dir"/powerline/font/10-powerline-symbols.conf ~/.fonts.conf.d/
+    ln -s "$dir"/powerline/font/10-powerline-symbols.conf ~/.config/fontconfig/conf.d/
     fc-cache -vf ~/.fonts/
-    ln -s powerline/develop/font/10-powerline-symbols.conf ~/.fonts.conf.d/
-    ln -s powerline/develop/font/10-powerline-symbols.conf ~/.config/fontconfig/conf.d/
 
     echo "Setting up Gnome Terminal profile..."
     apt_install dconf-cli
@@ -97,5 +97,12 @@ elif uname | grep -q Darwin; then
         open "solarized/osx-terminal.app-colors-solarized/xterm-256color/Solarized Dark xterm-256color.terminal"
         defaults write com.apple.Terminal "Startup Window Settings" "Solarized Dark xterm-256color"
         defaults write com.apple.Terminal "Default Window Settings" "Solarized Dark xterm-256color"
+    fi
+fi
+
+if uname | grep -q Linux; then
+    if [ -f /etc/sudoers ] && ! sudo grep -q env_keep /etc/sudoers; then
+        echo "Adding env_keep line to sudoers..."
+        sudo EDITOR='sed -f sudoers.sed -i' visudo
     fi
 fi
