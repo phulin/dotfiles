@@ -43,9 +43,12 @@ link .vimrc.local
 mkdir -p ~/.vim/syntax
 link .vim/syntax/llvm.vim
 
-if [ ! -d ~/.gdb_printers ]; then
-    mkdir ~/.gdb_printers
+if [ ! -d ~/.gdb_printers ] || [ ! -d ~/.gdb_printers/python ]; then
+    mkdir -p ~/.gdb_printers
     pushd ~/.gdb_printers
+    if uname | grep -q Linux; then
+        apt_install subversion
+    fi
     svn co svn://gcc.gnu.org/svn/gcc/trunk/libstdc++-v3/python
     popd
 fi
@@ -57,19 +60,28 @@ link bin/doge
 
 git submodule init
 git submodule update
-if which lsb_release && ( lsb_release -d | grep -q Ubuntu ) && \
+if which lsb_release > /dev/null && ( lsb_release -d | grep -q Ubuntu ) && \
         dpkg-query -l ubuntu-desktop &> /dev/null; then
     # Ubuntu Desktop
-    echo "Linking in Powerline fonts & fontconfig information..."
     mkdir -p ~/.fonts.conf.d ~/.config/fontconfig/conf.d ~/.fonts/
-    ln -s "$dir"/powerline/font/PowerlineSymbols.otf ~/.fonts/
-    ln -s "$dir"/powerline/font/10-powerline-symbols.conf ~/.fonts.conf.d/
-    ln -s "$dir"/powerline/font/10-powerline-symbols.conf ~/.config/fontconfig/conf.d/
-    fc-cache -vf ~/.fonts/
+    if [ ! -e ~/.fonts/PowerlineSymbols.otf ] || \
+        [ ! -e ~/.fonts.conf.d/10-powerline-symbols.conf ] || \
+        [ ! -e ~/.config/fontconfig/conf.d/10-powerline-symbols.conf ]; then
+        echo "Linking in Powerline fonts & fontconfig information..."
+        ln -s "$dir"/powerline/font/PowerlineSymbols.otf ~/.fonts/
+        ln -s "$dir"/powerline/font/10-powerline-symbols.conf ~/.fonts.conf.d/
+        ln -s "$dir"/powerline/font/10-powerline-symbols.conf ~/.config/fontconfig/conf.d/
+        fc-cache -vf ~/.fonts/
+    fi
+
+    apt_install dconf-cli
 
     echo "Setting up Gnome Terminal profile..."
-    apt_install dconf-cli
-    gnome-terminal-colors-solarized/set_dark.sh
+    profile_id=$(dconf list /org/gnome/terminal/legacy/profiles:/ | head -n 1)
+    dconf_color=/org/gnome/terminal/legacy/profiles:/"$profile_id"foreground-color
+    if ! ( dconf read "$dconf_color" | grep -q 838394949696 ); then
+        gnome-terminal-colors-solarized/set_dark.sh
+    fi
 
     echo "Mapping Caps to Escape..."
     dconf write /org/gnome/desktop/input-sources/xkb-options "['caps:escape']"
@@ -79,12 +91,10 @@ if which lsb_release && ( lsb_release -d | grep -q Ubuntu ) && \
     python - <<EOF
 import subprocess, shlex
 exec("l = " + subprocess.check_output(
-    shlex.split("gsettings get com.canonical.Unity.Launcher favorites")
-))
+    ['gsettings', 'get', 'com.canonical.Unity.Launcher', 'favorites']))
 l = [s for s in l if 'amazon' not in s and 'libreoffice' not in s]
-subprocess.check_call(shlex.split(
-    "gsettings set com.canonical.Unity.Launcher favorites \"%s\"" % l
-))
+subprocess.check_call(
+    ['gsettings', 'set', 'com.canonical.Unity.Launcher', 'favorites', str(l)])
 EOF
 elif uname | grep -q Darwin; then
     if [ ! -e "~/Library/Fonts/Menlo for Powerline.ttf" ]; then
