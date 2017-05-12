@@ -14,3 +14,7 @@ nmap ,l :bnext<CR>:AirlineRefresh<CR>
 nmap ,h :bprevious<CR>:AirlineRefresh<CR>
 nmap ,bq :bp <BAR> bd #<CR>
 nmap ,bl :ls<CR>
+
+autocmd FileType tex set wrap linebreak spell display=lastline
+
+set spellfile=~/dotfiles/en.utf-8.add
