@@ -6,6 +6,7 @@ export PATH="$PATH:/home/phulin/.cabal/bin:/home/phulin/bin:/home/phulin/.opam/s
 export PROMPT_COMMAND='history -a'
 alias pdir=". ~/bin/pdir"
 alias up=". ~/bin/up"
+alias tmux="tmux -2"
 
 export CLICOLOR=1
 
