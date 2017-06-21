@@ -1,6 +1,7 @@
 set history save
 handle SIG38 noprint
 set follow-fork-mode child
+set disassembly-flavor intel
 
 python
 from os.path import expanduser, join
