@@ -27,6 +27,9 @@ link .gdbinit
 link .gitconfig
 link .dircolors
 
+mkdir -p ~/.config/fish/conf.d
+link .config/fish/conf.d/60-dotfiles.fish
+
 mkdir -p ~/.local/bin
 link .local/bin/up
 link .local/bin/doge

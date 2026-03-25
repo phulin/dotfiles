@@ -9,3 +9,6 @@
 	diff = auto
 [push]
 	default = simple
+[user]
+	name = Patrick Hulin
+	email = patrick.hulin@gmail.com
