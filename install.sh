@@ -1,7 +1,7 @@
 #!/bin/bash
 
 function link() {
-    file="$dir/$1"
+    file="$(pwd)/$1"
     target="$HOME/$1"
     if [ -L "$target" ]; then
         echo "Skipping $target... already done."
@@ -20,46 +20,25 @@ function apt_install() {
     fi
 }
 
-cd $(dirname $0)
-dir=$(pwd)
+cd $(dirname "$0")
 link .tmux.conf
 link .bashrc
 link .gdbinit
 link .gitconfig
 link .dircolors
 
-git submodule init
-git submodule update
-link .vimrc.before.local
-link .vimrc.bundles.local
-if [ ! -d ~/.spf13-vim-3 ]; then
-    pushd spf13-vim
-    ./bootstrap.sh
-    popd
-    rm ~/.vimrc.local
+mkdir -p ~/.local/bin
+link .local/bin/up
+link .local/bin/doge
+
+if [ ! -d "$HOME/.config/nvim" ]; then
+    git clone https://github.com/LazyVim/starter ~/.config/nvim
+    rm -rf ~/.config/nvim/.git
 fi
-link .vimrc.local
-
-mkdir -p ~/.vim/syntax
-link .vim/syntax/llvm.vim
-
-if [ ! -d ~/.gdb_printers ] || [ ! -d ~/.gdb_printers/python ]; then
-    mkdir -p ~/.gdb_printers
-    pushd ~/.gdb_printers
-    if uname | grep -q Linux; then
-        apt_install subversion
-    fi
-    svn co svn://gcc.gnu.org/svn/gcc/trunk/libstdc++-v3/python
-    popd
-fi
-
-mkdir -p ~/bin
-link bin/up
-link bin/qemu-ctags
-link bin/doge
 
 git submodule init
 git submodule update
+
 if which lsb_release > /dev/null && ( lsb_release -d | grep -q Ubuntu ) && \
         dpkg-query -l ubuntu-desktop &> /dev/null; then
     # Ubuntu Desktop
@@ -68,9 +47,9 @@ if which lsb_release > /dev/null && ( lsb_release -d | grep -q Ubuntu ) && \
         [ ! -e ~/.fonts.conf.d/10-powerline-symbols.conf ] || \
         [ ! -e ~/.config/fontconfig/conf.d/10-powerline-symbols.conf ]; then
         echo "Linking in Powerline fonts & fontconfig information..."
-        ln -s "$dir"/powerline/font/PowerlineSymbols.otf ~/.fonts/
-        ln -s "$dir"/powerline/font/10-powerline-symbols.conf ~/.fonts.conf.d/
-        ln -s "$dir"/powerline/font/10-powerline-symbols.conf ~/.config/fontconfig/conf.d/
+        ln -s $(pwd)/powerline/font/PowerlineSymbols.otf ~/.fonts/
+        ln -s $(pwd)/powerline/font/10-powerline-symbols.conf ~/.fonts.conf.d/
+        ln -s $(pwd)/powerline/font/10-powerline-symbols.conf ~/.config/fontconfig/conf.d/
         fc-cache -vf ~/.fonts/
     fi
 
