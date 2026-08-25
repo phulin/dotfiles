@@ -33,6 +33,8 @@ link .config/fish/conf.d/60-dotfiles.fish
 mkdir -p ~/.local/bin
 link .local/bin/up
 link .local/bin/doge
+link .local/bin/codex-notify
+"$HOME/.local/bin/codex-notify" --install
 
 if [ ! -d "$HOME/.config/nvim" ]; then
     git clone https://github.com/LazyVim/starter ~/.config/nvim
